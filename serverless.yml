@@ -1,0 +1,27 @@
+service: poc-line-webhook
+
+frameworkVersion: ">=1.28.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: ap-southeast-1
+
+package:
+ exclude:
+   - ./**
+ include:
+   - ./bin/**
+
+functions:
+  bot:
+    handler: bin/bot
+    memorySize: 128
+    environment:
+      CHANNEL_SECRET: YOUT_CHANNEL_SECRET
+      CHANNEL_TOKEN: YOUT_CHANNEL_TOKEN
+    events:
+      - http:
+          path: callback
+          method: post
+          cors: true
